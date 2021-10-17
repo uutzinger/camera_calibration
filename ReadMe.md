@@ -29,7 +29,7 @@ Numpy was obtained from https://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy with i
 calibrate_cp        :    CPU:   39.753 us   +/-14.521 (min:   31.100 / max:  202.900) us     GPU-0:  389.680 us   +/-20.924 (min:  356.352 / max:  617.472) us
 ```
 
-As can be seen, Numpy jit compiled with Numba has best performance if no other cacluations are needed as the GPU requires the same amount of computatino time but has additional copy overhead.
+As can be seen, Numpy jit compiled with Numba has best performance if no other cacluations are needed as the GPU requires the same amount of computation time but has additional overhead.
 
 ## Pre Requisites
 * Install CUDA https://developer.nvidia.com/cuda-toolkit
@@ -147,6 +147,7 @@ data     = data_gpu.copy_to_host() # retrieve
 data_cp = cp.array(data, copy=True)  # send
 data    = cp.asnumpy(data_cp)        # retrieve
 ```
+CuPy datatransfer is fastest, and since Numba and CuPy data types are the same, one should transfter data using CuPy also for Numba accelerated functions.
 
 ## Syncing
 Computations on the GPU run in the background. You will need to wait until GPU is finished with calculations using:
@@ -155,7 +156,7 @@ Computations on the GPU run in the background. You will need to wait until GPU i
 * CuPy ```cp.cuda.stream.get_current_stream().synchronize()  ```  
 if you want to measure accurate execuation times.
 
-## Lowest Intesity Imagee in Data Stack
+## Lowest Intesity Image in Data Stack
 To find the lowest intensity image we use a few pixels in the image and sum the intensity. Then we find the smallest sum.
 ```
 inten = np.zeros(14, 'uint16') # pre allocate
