@@ -9,6 +9,8 @@ The task is to calibrate a stack of 14 images by subtracting the background imag
 Image data and background data is either ```uint8``` or ```uint16```.  
 The flatfield is ```0...1``` and should scaled by ```255```.  Then the results will be ```uint16``` and range from ```0...65535```
 
+From speed results below, one concludes that GPU calculation does not accelerate this problem. However if other more complex computations are needed, this might change.
+
 ### Speed Results
 All times are in ```milli seconds```.
 Numpy was obtained from https://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy with intel math kernel optimization and matched the version required by Numba. 
@@ -39,6 +41,13 @@ As can be seen, Numpy jit compiled with Numba has best performance if no other c
 
 * Update setuppools ```pip3 install -U setuptools pip```
 * Install CuPy ```pip3 install cupy-cuda114```
+
+## Readings
+
+Cupy: https://docs.cupy.dev/en/stable/user_guide/  
+Numba: https://github.com/ContinuumIO/gtc2020-numba and https://www.youtube.com/watch?v=CQDsT81GyS8  
+Numba: https://developer.nvidia.com/blog/numba-python-cuda-acceleration/  
+Numba: https://numba.pydata.org/  
 
 ## Calibration
 Implementation of the calibration routines for the differente backends
